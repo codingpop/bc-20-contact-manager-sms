@@ -35,3 +35,5 @@ const commandParser = function (command, action = 'add') {
   return result;
 
 }
+
+module.exports.commandParser = commandParser;
