@@ -7,11 +7,11 @@ const commandParser = function (command, action = 'add') {
   let result = [];
 
   command = command.trim().split(' ');
-  
+
   if (action === 'add') { // Parsing a add contact command
     if (command.indexOf('-n') === -1 ||
-        command.indexOf('-p') === -1 ||
-        command.length < 5) {
+      command.indexOf('-p') === -1 ||
+      command.length < 5) {
       // result = `Syntax Error! Please add contact using this format: ${addSyntax}`;
       result = false;
     }
@@ -29,11 +29,10 @@ const commandParser = function (command, action = 'add') {
       // result = `Syntax Error! Please search contact using this format: ${searchSyntax}`;
       result = false;
     }
-    result = command[1];
+    result = command[1].replace(/^"(.*)"$/, '$1');
   }
 
   return result;
-
 }
 
 module.exports.commandParser = commandParser;
