@@ -1,8 +1,9 @@
 'use strict';
 
 const MongoClient = require('mongodb').MongoClient;
-const url = 'mongodb://localhost/contactmanager';
+const localDB = 'contactmanager';
 const userCollection = 'tunde';
+const url = `mongodb://localhost/${localDB}`;
 
 // This function saves contact to the database
 const saveContact = function (firstName, lastName, phoneNumber) {
