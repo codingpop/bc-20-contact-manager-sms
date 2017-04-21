@@ -19,14 +19,14 @@ const mainMenu = function () {
     '\n [2] Search contact' +
     '\n [3] Send SMS' +
     '\n [4] Close application\n\n> ', function (answer) {
-      
+
       if (answer == 1) { // User wants to add contact
-        rl.setPrompt(`\n  Add contact using this syntax: ${addSyntax}.\n  To go back, enter back\n\n> `);
+        rl.setPrompt(`\n  Add contact using this syntax: ${addSyntax}.\n  To go back, enter -b\n\n> `);
         rl.prompt();
 
         // Takes the user back to the main menu
         rl.on('line', function (userPrompt) {
-          if (userPrompt.toLowerCase().trim() === 'back') {
+          if (userPrompt.toLowerCase().trim() === '-b') {
             mainMenu();
           }
 
@@ -40,33 +40,51 @@ const mainMenu = function () {
             // Saves name and number to the database
             database.saveContact(firstName, lastName, phoneNumber);
 
-            rl.setPrompt(`Add another contact or enter exit to go back  `);
+            rl.setPrompt(`\n  Add contact using this syntax: ${addSyntax}.\n  To go back, enter -b\n\n> `);
             rl.prompt();
           }
         });
       }
 
       if (answer == 2) { // User wants to search
-        rl.setPrompt(`\n  Search contact using this syntax: ${searchSyntax}.\n\n> `);
+        rl.setPrompt(`\n  Search contact using this syntax: ${searchSyntax}` +
+        '\n  To go back, enter -b\n\n> ');
         rl.prompt();
 
         rl.on('line', function (userPrompt) {
           let query = commandParser.commandParser(userPrompt, 'search');
-          let result = database.findContact(query);
+          database.findContact(query);
         })
+
 
       }
 
       if (answer == 3) { // User wants to send a message
-        rl.setPrompt(`\n  Send a text message using this syntax: text <name> -m "your message" `);
+        rl.setPrompt('\n  Send a text message using this syntax: text <name> -m "your message"' + 
+        '\n  To go back, enter -b \n  > ');
+
         rl.prompt();
 
         rl.on('line', function (userPrompt) {
-          let nameMessage = commandParser.commandParser(userPrompt, 'text');
-          let name = nameMessage[0];
-          let message = nameMessage[1];
+          let nameMessage = commandParser.commandParser(userPrompt, 'sms');
 
-          sendMessage.sendMessage(name, message);
+          if (!nameMessage) {
+            console.log('Invalid syntax');
+          }
+          else {
+            let name = nameMessage[0];
+            let message = nameMessage[1];
+            sendMessage.sendMessage(name, message);
+
+            rl.setPrompt('');
+            rl.prompt();
+
+            rl.on('line', function (userPrompt) {
+              if (userPrompt.toLowerCase().trim() === '-b') {
+                mainMenu();
+              }
+            })
+          }
 
         });
 

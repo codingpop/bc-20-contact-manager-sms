@@ -8,32 +8,35 @@ const userCollection = 'tunde';
 const Jusibe = require('jusibe');
 const jusibe = new Jusibe("ad029994918885b1726fbee07a69ca8d", "0f13a26c14e228173d817e173228ab7b");
 
-let target = 08131326411;
-const payload = {
-  to: target,
-  from: 'Tunde',
-  message: "My friend, go get me Gala."
-};
+// const payload = {
+//   to: target,
+//   from: 'Tunde',
+//   message: "My friend, go get me Gala."
+// };
 
 const sendMessage = function (name, message) {
-  let phoneNumber = 0;
   MongoClient.connect(url, function (err, db) {
 
     let cursor = db.collection(userCollection);
 
-    cursor.find({ $or: [{ last_name: name }] }).toArray(function (err, doc) {
+    cursor.find({ first_name: name }).toArray(function (err, doc) {
 
       if (!doc.length) {
         console.log('Contact not found');
-        console.log(cursor);
       }
 
       if (doc.length === 1) {
-        phoneNumber = doc[0].phone_number;
+        const target = Number(doc[0].phone_number);
+
+        const payload = {
+          to: target,
+          from: 'Tunde',
+          message: message
+        };
 
         jusibe.sendSMS(payload, function (err, res) {
           if (res.statusCode === 200) {
-            console.log(res.body);
+            console.log('Message sent');
           }
           else {
             console.log(err);
@@ -41,13 +44,6 @@ const sendMessage = function (name, message) {
         });
 
       }
-
-      // if (doc.length > 1) {
-      //   console.log(`Which ${query}?`);
-      //   for (let i = 0; i < doc.length; i++) {
-      //     console.log(`[${i + 1}] ${doc[i].first_name}`);
-      //   }
-      // }
     })
     db.close();
   });

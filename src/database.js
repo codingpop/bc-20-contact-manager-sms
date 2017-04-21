@@ -39,7 +39,7 @@ const findContact = function (query) {
     cursor.find({ first_name: query }).toArray(function (err, doc) {
 
       if (doc.length === 0) {
-        console.log('Contact not found');
+        console.log('   Contact not found');
       }
 
       if (doc.length === 1) {

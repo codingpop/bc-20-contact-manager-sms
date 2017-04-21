@@ -5,7 +5,7 @@ const commandParser = function (command, action = 'add') {
   const addSyntax = 'add -n <name> -p <phone number>';
   const searchSyntax = 'search <name>';
   let result = [];
-
+  let smsCommand = command;
   command = command.trim().split(' ');
 
   if (action === 'add') { // Parsing a add contact command
@@ -21,9 +21,8 @@ const commandParser = function (command, action = 'add') {
         command.splice(command.indexOf('-n') + 1, command.indexOf('-p') - 2).join(' '),
         command[command.indexOf('-p') + 1]
       );
-    }
-
     return result;
+    }
   }
 
   if (action === 'search') {
@@ -31,23 +30,24 @@ const commandParser = function (command, action = 'add') {
       // result = `Syntax Error! Please search contact using this format: ${searchSyntax}`;
       result = false;
     }
-    result = command[1].replace(/^"(.*)"$/, '$1');
+    else {
+      result = command[1].replace(/^"(.*)"$/, '$1');
+      return result;
+
+    }
   }
 
-  if (action === 'text') {
-    if (command.indexOf('text') === -1 ||
-      command.indexOf('-m' === -1 ||
-        command.indexOf('"') === -1 ||
-        command.length === 0)
-    ) {
+  if (action === 'sms') {
+    if (smsCommand.indexOf('text') === -1 || smsCommand.indexOf('-m') === -1) {
       return false;
     }
 
     else {
-      let name = command.split(' ')[1];
-      let messageStart = command.indexOf('-m') + 4;
-      let message = command.splice(messageStart, command.length - 1);
+      smsCommand = smsCommand.split('"');
+      let name = smsCommand[0].split(' ')[1];
+      let message = smsCommand[1];
       result.push(name, message);
+      return result;
     }
 
   }
