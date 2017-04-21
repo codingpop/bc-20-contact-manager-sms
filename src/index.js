@@ -43,7 +43,7 @@ const mainMenu = function () {
             else {
 
               // Saves name and number to the database
-              database.saveContact(firstName, lastName, '0' + String(phoneNumber));
+              database.saveContact(firstName, lastName, phoneNumber);
             }
 
 
