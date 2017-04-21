@@ -46,11 +46,12 @@ const findContact = function (query) {
       }
 
       if (doc.length > 1) {
-        console.log(doc);
+        let multipleContact = doc;
         console.log(`Which ${query}?`);
         for (let i = 0; i < doc.length; i++) {
-          console.log(`[${i + 1}] ${doc[i].name[1]}`);
+          console.log(`[${i + 1}] ${doc[i].name[0]} ${doc[i].name[1]}`);
         }
+        return doc;
       }
     });
     db.close();

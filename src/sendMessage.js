@@ -4,7 +4,6 @@ const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost/contactmanager';
 const userCollection = 'tunde';
 
-'use strict';
 const Jusibe = require('jusibe');
 const jusibe = new Jusibe("ad029994918885b1726fbee07a69ca8d", "0f13a26c14e228173d817e173228ab7b");
 
@@ -26,7 +25,7 @@ const sendMessage = function (name, message) {
       }
 
       if (doc.length === 1) {
-        const target = Number(doc[0].phone_number);
+        const target = doc[0].phone_number;
 
         const payload = {
           to: target,
@@ -37,6 +36,7 @@ const sendMessage = function (name, message) {
         jusibe.sendSMS(payload, function (err, res) {
           if (res.statusCode === 200) {
             console.log('Message sent');
+            console.log(res.body);
           }
           else {
             console.log(err);
@@ -49,10 +49,5 @@ const sendMessage = function (name, message) {
   });
 
 }
-
-
-// const sendMessage = function (number) {
-
-// }
 
 module.exports.sendMessage = sendMessage;
