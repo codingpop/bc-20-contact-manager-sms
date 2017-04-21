@@ -32,15 +32,13 @@ const saveContact = function (firstName, lastName, phoneNumber) {
 }
 
 
-
-
 const findContact = function (query) {
   MongoClient.connect(url, function (err, db) {
 
     let cursor = db.collection(userCollection);
-    cursor.find({ $or: [{ first_name: query }, { last_name: query }] }).toArray(function (err, doc) {
+    cursor.find({ first_name: query }).toArray(function (err, doc) {
 
-      if (!doc.length) {
+      if (doc.length === 0) {
         console.log('Contact not found');
       }
 
