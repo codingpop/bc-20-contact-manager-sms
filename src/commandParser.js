@@ -22,9 +22,11 @@ const commandParser = function (command, action = 'add') {
         command[command.indexOf('-p') + 1]
       );
     }
+
+    return result;
   }
 
-  else if (action === 'search') {
+  if (action === 'search') {
     if (command.indexOf('search') === -1 || command.length < 2) {
       // result = `Syntax Error! Please search contact using this format: ${searchSyntax}`;
       result = false;
@@ -32,7 +34,23 @@ const commandParser = function (command, action = 'add') {
     result = command[1].replace(/^"(.*)"$/, '$1');
   }
 
-  return result;
+  if (action === 'text') {
+    if (command.indexOf('text') === -1 ||
+      command.indexOf('-m' === -1 ||
+        command.indexOf('"') === -1 ||
+        command.length === 0)
+    ) {
+      return false;
+    }
+
+    else {
+      let name = command.split(' ')[1];
+      let messageStart = command.indexOf('-m') + 4;
+      let message = command.splice(messageStart, command.length - 1);
+      result.push(name, message);
+    }
+
+  }
 }
 
 module.exports.commandParser = commandParser;

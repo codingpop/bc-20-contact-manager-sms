@@ -8,24 +8,38 @@ const userCollection = 'tunde';
 const saveContact = function (firstName, lastName, phoneNumber) {
   MongoClient.connect(url, function (err, db) {
 
-    let cursor = db.collection(userCollection);
+    if (err) {
+      console.log('Cannot connect to the database');
+    }
+    else {
 
-    // Add data to the database
-    cursor.insertOne({
-      first_name: firstName,
-      last_name: lastName,
-      phone_number: phoneNumber
-    });
-    db.close();
+      let cursor = db.collection(userCollection);
+
+      // Add data to the database
+      cursor.insertOne({
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber
+      });
+
+      console.log(`\n ${firstName} ${lastName} added`);
+
+      db.close();
+
+    }
+
   });
 }
 
+
+
+
 const findContact = function (query) {
   MongoClient.connect(url, function (err, db) {
-    
+
     let cursor = db.collection(userCollection);
     cursor.find({ $or: [{ first_name: query }, { last_name: query }] }).toArray(function (err, doc) {
-      
+
       if (!doc.length) {
         console.log('Contact not found');
       }
@@ -41,9 +55,7 @@ const findContact = function (query) {
         }
       }
     });
-
-
-  db.close();
+    db.close();
   });
 }
 
