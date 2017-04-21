@@ -37,8 +37,15 @@ const mainMenu = function () {
             let firstName = name[0], lastName = name[1];
             let phoneNumber = commandParser.commandParser(userPrompt)[1];
 
-            // Saves name and number to the database
-            database.saveContact(firstName, lastName, phoneNumber);
+            if (Number.isNaN(Number(phoneNumber)) || phoneNumber.length !== 11) {
+              console.log('\n  Please enter a valid phone number');
+            }
+            else {
+
+              // Saves name and number to the database
+              database.saveContact(firstName, lastName, '0' + String(phoneNumber));
+            }
+
 
             rl.setPrompt(`\n  Add contact using this syntax: ${addSyntax}.\n  To go back, enter -b\n\n> `);
             rl.prompt();
@@ -48,7 +55,7 @@ const mainMenu = function () {
 
       if (answer == 2) { // User wants to search
         rl.setPrompt(`\n  Search contact using this syntax: ${searchSyntax}` +
-        '\n  To go back, enter -b\n\n> ');
+          '\n  To go back, enter -b\n\n> ');
         rl.prompt();
 
         rl.on('line', function (userPrompt) {
@@ -60,8 +67,8 @@ const mainMenu = function () {
       }
 
       if (answer == 3) { // User wants to send a message
-        rl.setPrompt('\n  Send a text message using this syntax: text <name> -m "your message"' + 
-        '\n  To go back, enter -b \n  > ');
+        rl.setPrompt('\n  Send a text message using this syntax: text <name> -m "your message"' +
+          '\n  To go back, enter -b \n  > ');
 
         rl.prompt();
 
