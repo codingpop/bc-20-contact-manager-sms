@@ -1,0 +1,29 @@
+{
+  "name": "contact-manager-pro",
+  "version": "1.0.0",
+  "description": "Helps user manage contacts from a command line interface",
+  "main": "index.js",
+  "dependencies": {
+    "jusibe": "^0.2.0",
+    "mongodb": "^2.2.26"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tundewritescode/bc-20-contact-manager-sms.git"
+  },
+  "keywords": [
+    "contact",
+    "manager",
+    "CLI"
+  ],
+  "author": "Babatunde Adeyemi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tundewritescode/bc-20-contact-manager-sms/issues"
+  },
+  "homepage": "https://github.com/tundewritescode/bc-20-contact-manager-sms#readme"
+}
